@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/NealOKelly/digiot-stream#readme",
   "dependencies": {
+    "dateformat": "^3.0.3",
     "twit": "^2.2.11",
     "twitter": "^1.7.1"
   },

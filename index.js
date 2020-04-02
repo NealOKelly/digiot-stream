@@ -1,4 +1,5 @@
 // JavaScript Document
+var dateFormat = require('dateformat');
 
 const Twitter = require('twit');
 const client = new Twitter({
@@ -12,7 +13,7 @@ const client = new Twitter({
 // var users = [Tom, Kit Collingwood, Rob_Stirling, GretaThunberg, MOJSpirit, Justice_Digital, taylorswift13, nealokelly];
 var users = ["19962797", "396536542", "175750974", "1006419421244678144", "1686415056", "1927147742", "17919972", "454288197"];
 
-console.log("The users variable has been seeded with the following users ids:");
+console.log(getTimeStamp() + "The users variable has been seeded with the following users ids:");
 console.log(users);
 
 
@@ -20,7 +21,7 @@ console.log(users);
 // Get list of ids for users that Fiona follows.
 client.get('friends/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
 	users = data.ids;
-	console.log("The users variable has been updated with the following user ids that Fiona follows:");
+	console.log(getTimeStamp() + "The users variable has been updated with the following user ids that Fiona follows:");
 	console.log(users);
 });
 
@@ -34,8 +35,8 @@ setTimeout(function () {
 		if (users.indexOf(tweet.user.id_str) > -1) {
 
 			// Log info about the Tweet
-			console.log(tweet.user.name + " has tweeted.");
-			console.log("The text of the tweet is: " + tweet.text);
+			console.log(getTimeStamp() + tweet.user.name + " has tweeted.");
+			console.log(getTimeStamp() + "The text of the tweet is: " + tweet.text);
 			//console.log(tweet);
 
 			// Determine what type of tweet it is.
@@ -64,14 +65,14 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
-								console.log("Fiona has retweeted.");
+								console.log(getTimeStamp() + "Fiona has retweeted " + tweet.user.name + "'s tweet.");
 								//console.log(data)
 						})
 					}, delay);			
 
 				}// if(willRetweet())
 				else{
-					console.log("Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
+					console.log(getTimeStamp() + "Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
 				}	
 				
 				if (willFavorite()== true){
@@ -82,25 +83,25 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							client.post('favorites/create', { id: tweet.id_str }, function (err, data, response) {
-								console.log("Fiona has retweeted.");
+								console.log(getTimeStamp() + "Fiona has favorited " + tweet.user.name + "'s tweet.");
 								//console.log(data)
 						})
 					}, delay);			
 
 				}// if(willRetweet())
 				else{
-					console.log("Fiona has decided that she WILL NOT favorite " + tweet.user.name + "'s tweet on this occasion.")
+					console.log(getTimeStamp() + "Fiona has decided that she WILL NOT favorite " + tweet.user.name + "'s tweet on this occasion.")
 				}
 				
 			}
 			else{
-				console.log("Fiona does not currently respond to replies because she doesn't want to seem demented.")
+				console.log(getTimeStamp() + "Fiona does not currently respond to replies because she doesn't want to seem demented.")
 			}
 	
 		}
 })
 
-}, 30000); // wait for 30s before initiating the stream to ensure that the users variable has been updated.
+}, 10000); // wait for 30s before initiating the stream to ensure that the users variable has been updated.
 
 
 // get amount of time to wait before carrying out the action (max 25 minutes)
@@ -131,5 +132,12 @@ function willFavorite(){
 	else{
 		return false;
 	}
+}
+
+function getTimeStamp(){
+	// function used to return timestamps for use with console logging.
+	// See https://www.npmjs.com/package/dateformat
+	now = Date();
+	return dateFormat(now, "dd-mm-yyyy HH:MM:ss") + ": ";
 }
 
