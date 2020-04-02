@@ -71,7 +71,7 @@ setTimeout(function () {
 
 				}// if(willRetweet())
 				else{
-					console.log("Fiona has decided that she will not retweet on this occasion.")
+					console.log("Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
 				}	
 				
 				if (willFavorite()== true){
@@ -89,9 +89,12 @@ setTimeout(function () {
 
 				}// if(willRetweet())
 				else{
-					console.log("Fiona has decided that she will not favorite this tweet on this occasion.")
+					console.log("Fiona has decided that she WILL NOT favorite " + tweet.user.name + "'s tweet on this occasion.")
 				}
 				
+			}
+			else{
+				console.log("Fiona does not currently respond to replies because she doesn't want to seem demented.")
 			}
 	
 		}
