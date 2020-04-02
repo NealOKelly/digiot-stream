@@ -64,7 +64,7 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
-								console.log("Fiona will has retweeted.");
+								console.log("Fiona has retweeted.");
 								//console.log(data)
 						})
 					}, delay);			
@@ -72,8 +72,28 @@ setTimeout(function () {
 				}// if(willRetweet())
 				else{
 					console.log("Fiona has decided that she will not retweet on this occasion.")
-				}			
+				}	
+				
+				if (willFavorite()== true){
+
+						var actionType = "retweet";
+						delay = getDelay(actionType);	
+
+
+						setTimeout(function () {
+							client.post('favorites/create', { id: tweet.id_str }, function (err, data, response) {
+								console.log("Fiona has retweeted.");
+								//console.log(data)
+						})
+					}, delay);			
+
+				}// if(willRetweet())
+				else{
+					console.log("Fiona has decided that she will not favorite this tweet on this occasion.")
+				}
+				
 			}
+	
 		}
 })
 
@@ -89,16 +109,24 @@ function getDelay(actionType){
 }
 
 function willRetweet(){
-	var probability = .2;
+	var probability = .1;
 	var dice = Math.random();
-	//console.log('dice = ' + dice);
 	if(dice <= probability){
-		//console.log("Returning True");
- 		return true;
-		//return false;
+		return true;
 	}
 	else{
-		//console.log("Returning False");
 		return false;
 	}
 }
+
+function willFavorite(){
+	var probability = .15;
+	var dice = Math.random();
+	if(dice <= probability){
+ 		return true;
+	}
+	else{
+		return false;
+	}
+}
+
