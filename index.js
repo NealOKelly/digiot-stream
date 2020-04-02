@@ -52,7 +52,7 @@ setTimeout(function () {
 				tweetType = "Quoted Retweet";
 				}
 
-			console.log("The Tweet is a: " + tweetType);
+			console.log(getTimeStamp() + "The Tweet is a: " + tweetType);
 
 
 			if(tweetType!="Reply"){
