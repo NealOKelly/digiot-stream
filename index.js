@@ -13,7 +13,7 @@ const client = new Twitter({
 // var users = [Tom, Kit Collingwood, Rob_Stirling, GretaThunberg, MOJSpirit, Justice_Digital, taylorswift13, nealokelly];
 var users = ["19962797", "396536542", "175750974", "1006419421244678144", "1686415056", "1927147742", "17919972", "454288197"];
 
-var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏". "👋 tweeps!"];
+var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏", "👋 tweeps!"];
 
 console.log(getTimeStamp() + "The users variable has been seeded with the following users ids:");
 console.log(users);
@@ -59,7 +59,12 @@ setTimeout(function () {
 			if(tweetType!="Reply"){
 
 				if (willRetweet()== true){
-
+					console.log(getTimeStamp() +"Fiona is going to retweet " + tweet.user.name +"'s tweet.'");
+					if(willQuote()== true) {
+						console.log("Fiona would quote this.");
+					}
+					else{
+												
 						var actionType = "retweet";
 						delay = getDelay(actionType);	
 
@@ -68,8 +73,10 @@ setTimeout(function () {
 							client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
 							console.log(getTimeStamp() + "Fiona has retweeted " + tweet.user.name + "'s tweet.");
 								//console.log(data)
-						})
-					}, delay);			
+							})
+						}, delay);	
+					}
+		
 
 				}// if(willRetweet())
 				else{
@@ -133,6 +140,20 @@ function decideToAct(probability){
 		return false;
 	}
 }
+
+function getRandomArrayElements(arr, count) {
+    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+    while (i-- > min) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(min);
+}
+
+
+
 
 
 function getTimeStamp(){
