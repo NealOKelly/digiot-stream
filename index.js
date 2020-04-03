@@ -13,7 +13,7 @@ const client = new Twitter({
 // var users = [Tom, Kit Collingwood, Rob_Stirling, GretaThunberg, MOJSpirit, Justice_Digital, taylorswift13, nealokelly];
 var users = ["19962797", "396536542", "175750974", "1006419421244678144", "1686415056", "1927147742", "17919972", "454288197"];
 
-var phrases = ["Disagree", "??", "This is great.", "This is fab.", "Celebrate this ??", "Agree", "Not sure about this.", "Totally agree ??", "Love this! ??", "Awesome", "More of this please", "Less of this!", "??", "??????", "?? tweeps!"];
+var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏", "👋 tweeps!"];
 
 console.log(getTimeStamp() + "The users variable has been seeded with the following users ids:");
 console.log(users);
@@ -22,7 +22,7 @@ console.log(users);
 
 // Get list of ids for users that Fiona follows.
 client.get('friends/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
-	//users = data.ids;
+	users = data.ids;
 	console.log(getTimeStamp() + "The users variable has been updated with the following user ids that Fiona follows:");
 	console.log(users);
 });
@@ -68,8 +68,11 @@ setTimeout(function () {
 
 
 						setTimeout(function () {
-							  client.post('statuses/update', { status: "👋 tweeps!", attachment_url: "https://twitter.com/jeremycorbyn/status/1246045571879706626" }, function(err, data, response) {
+							//console.log("This is the URL Fiona will use: "+ "https://twitter.com/i/web/status/" + tweet.id_str)
+							console.log("This is the URL Fiona will use: "+ "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str);
+							  client.post('statuses/update', { status:  getRandomArrayElements(phrases, 1), attachment_url:  "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str }, function(err, data, response) {
 							  console.log(getTimeStamp() + "Fiona has commented on " + tweet.user.name + "'s tweet.");
+							  //console.log(response);
 							})
 
 						}, delay);
@@ -129,14 +132,14 @@ setTimeout(function () {
 
 // get amount of time to wait before carrying out the action (max 25 minutes)
 function getDelay(actionType){
-	var delay = Math.random() * 1500;
+	var delay = Math.random() * 1500000;
 	//console.log('Time to delay before carrying out action : ' + delay);
 	//console.log("Action Type:" + actionType);
 	return delay;
 }
 
 function willRetweet(){
-	return decideToAct(.9);
+	return decideToAct(.1);
 }
 
 function willFavorite(){
@@ -144,7 +147,7 @@ function willFavorite(){
 }
 
 function willQuote(){
-	return decideToAct(.9);
+	return decideToAct(.5);
 	// note that Quoting is a subset of retweeting, hence the relatively high probability.
 }
 
