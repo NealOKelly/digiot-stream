@@ -13,7 +13,7 @@ const client = new Twitter({
 // var users = [Tom, Kit Collingwood, Rob_Stirling, GretaThunberg, MOJSpirit, Justice_Digital, taylorswift13, nealokelly];
 var users = ["19962797", "396536542", "175750974", "1006419421244678144", "1686415056", "1927147742", "17919972", "454288197"];
 
-var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏", "👋 tweeps!"];
+var phrases = ["Disagree", "??", "This is great.", "This is fab.", "Celebrate this ??", "Agree", "Not sure about this.", "Totally agree ??", "Love this! ??", "Awesome", "More of this please", "Less of this!", "??", "??????", "?? tweeps!"];
 
 console.log(getTimeStamp() + "The users variable has been seeded with the following users ids:");
 console.log(users);
@@ -22,7 +22,7 @@ console.log(users);
 
 // Get list of ids for users that Fiona follows.
 client.get('friends/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
-	users = data.ids;
+	//users = data.ids;
 	console.log(getTimeStamp() + "The users variable has been updated with the following user ids that Fiona follows:");
 	console.log(users);
 });
@@ -61,7 +61,7 @@ setTimeout(function () {
 				if (willRetweet()== true){
 					console.log(getTimeStamp() +"Fiona is going to retweet " + tweet.user.name +"'s tweet.'");
 					if(willQuote()== true) {
-						console.log("Fiona would quote this.");
+						console.log(getTimeStamp() + "Fiona has something to say about " + tweet.user.name +"'s tweet.'");
 						
 						var actionType = "retweet";
 						delay = getDelay(actionType);	
@@ -69,7 +69,7 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							  client.post('statuses/update', { status: "👋 tweeps!", attachment_url: "https://twitter.com/jeremycorbyn/status/1246045571879706626" }, function(err, data, response) {
-							  console.log(data)
+							  console.log(getTimeStamp() + "Fiona has commented on " + tweet.user.name + "'s tweet.");
 							})
 
 						}, delay);
@@ -129,14 +129,14 @@ setTimeout(function () {
 
 // get amount of time to wait before carrying out the action (max 25 minutes)
 function getDelay(actionType){
-	var delay = Math.random() * 1500000;
+	var delay = Math.random() * 1500;
 	//console.log('Time to delay before carrying out action : ' + delay);
 	//console.log("Action Type:" + actionType);
 	return delay;
 }
 
 function willRetweet(){
-	return decideToAct(.1);
+	return decideToAct(.9);
 }
 
 function willFavorite(){
