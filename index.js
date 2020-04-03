@@ -62,6 +62,21 @@ setTimeout(function () {
 					console.log(getTimeStamp() +"Fiona is going to retweet " + tweet.user.name +"'s tweet.'");
 					if(willQuote()== true) {
 						console.log("Fiona would quote this.");
+						
+						var actionType = "retweet";
+						delay = getDelay(actionType);	
+
+
+						setTimeout(function () {
+							  client.post('statuses/update', { status: "👋 tweeps!", attachment_url: "https://twitter.com/jeremycorbyn/status/1246045571879706626" }, function(err, data, response) {
+							  console.log(data)
+							})
+
+						}, delay);
+						
+						
+						
+						
 					}
 					else{
 												
@@ -129,7 +144,8 @@ function willFavorite(){
 }
 
 function willQuote(){
-	return decideToAct(.15);
+	return decideToAct(.9);
+	// note that Quoting is a subset of retweeting, hence the relatively high probability.
 }
 
 function decideToAct(probability){
@@ -141,7 +157,10 @@ function decideToAct(probability){
 	}
 }
 
+
+
 function getRandomArrayElements(arr, count) {
+	// function borrowed from https://stackoverflow.com/questions/7158654/how-to-get-random-elements-from-an-array
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());
