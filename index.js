@@ -13,6 +13,8 @@ const client = new Twitter({
 // var users = [Tom, Kit Collingwood, Rob_Stirling, GretaThunberg, MOJSpirit, Justice_Digital, taylorswift13, nealokelly];
 var users = ["19962797", "396536542", "175750974", "1006419421244678144", "1686415056", "1927147742", "17919972", "454288197"];
 
+var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏". "👋 tweeps!"];
+
 console.log(getTimeStamp() + "The users variable has been seeded with the following users ids:");
 console.log(users);
 
@@ -24,7 +26,6 @@ client.get('friends/ids', { screen_name: 'anton_fiona', stringify_ids: true },  
 	console.log(getTimeStamp() + "The users variable has been updated with the following user ids that Fiona follows:");
 	console.log(users);
 });
-
 
 setTimeout(function () {
 
@@ -77,7 +78,7 @@ setTimeout(function () {
 				
 				if (willFavorite()== true){
 
-						var actionType = "retweet";
+						var actionType = "favorite";
 						delay = getDelay(actionType);	
 
 
@@ -107,20 +108,13 @@ setTimeout(function () {
 // get amount of time to wait before carrying out the action (max 25 minutes)
 function getDelay(actionType){
 	var delay = Math.random() * 1500000;
-	console.log('Time to delay before carrying out action : ' + delay);
-	console.log("Action Type:" + actionType);
+	//console.log('Time to delay before carrying out action : ' + delay);
+	//console.log("Action Type:" + actionType);
 	return delay;
 }
 
 function willRetweet(){
-	var probability = .1;
-	var dice = Math.random();
-	if(dice <= probability){
-		return true;
-	}
-	else{
-		return false;
-	}
+	return decideToAct(.1);
 }
 
 function willFavorite(){
@@ -134,10 +128,19 @@ function willFavorite(){
 	}
 }
 
+function decideToAct(probability){
+	if(Math.random() <= probability){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+
 function getTimeStamp(){
 	// function used to return timestamps for use with console logging.
 	// See https://www.npmjs.com/package/dateformat
 	now = Date();
 	return dateFormat(now, "dd-mm-yyyy HH:MM:ss") + ": ";
 }
-
