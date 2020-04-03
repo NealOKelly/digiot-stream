@@ -66,7 +66,7 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
-								console.log(getTimeStamp() + "Fiona has retweeted " + tweet.user.name + "'s tweet.");
+							console.log(getTimeStamp() + "Fiona has retweeted " + tweet.user.name + "'s tweet.");
 								//console.log(data)
 						})
 					}, delay);			
@@ -118,14 +118,11 @@ function willRetweet(){
 }
 
 function willFavorite(){
-	var probability = .15;
-	var dice = Math.random();
-	if(dice <= probability){
- 		return true;
-	}
-	else{
-		return false;
-	}
+	return decideToAct(.15);
+}
+
+function willQuote(){
+	return decideToAct(.15);
 }
 
 function decideToAct(probability){
