@@ -1,4 +1,14 @@
-// JavaScript Document
+// console colors
+const escapeCharcters = "\x1b";
+const resetColor = "\x1b[0m";
+var cyan = escapeCharcters + "[36m";
+var red = escapeCharcters + "[31m";
+var yellow = escapeCharcters + "[33m";
+var green = escapeCharcters + "[32m";
+var white = escapeCharcters + "[37m";
+
+
+
 var dateFormat = require('dateformat');
 
 const Twitter = require('twit');
@@ -11,11 +21,11 @@ const client = new Twitter({
 
 // Set users for Fiona's tweet stream.
 // var users = [Tom, Kit Collingwood, Rob_Stirling, GretaThunberg, MOJSpirit, Justice_Digital, taylorswift13, nealokelly];
-var users = ["19962797", "396536542", "175750974", "1006419421244678144", "1686415056", "1927147742", "17919972", "454288197"];
+var users = ["1927147742", "454288197"];
 
 var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏", "👋 tweeps!"];
 
-console.log(getTimeStamp() + "The users variable has been seeded with the following users ids:");
+console.log(getTimeStamp(), "The users variable has been seeded with the following users ids:");
 console.log(users);
 
 
@@ -23,7 +33,7 @@ console.log(users);
 // Get list of ids for users that Fiona follows.
 client.get('friends/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
 	users = data.ids;
-	console.log(getTimeStamp() + "The users variable has been updated with the following user ids that Fiona follows:");
+	console.log(getTimeStamp(), "The users variable has been updated with the following user ids that Fiona follows:");
 	console.log(users);
 });
 
@@ -36,8 +46,8 @@ setTimeout(function () {
 		if (users.indexOf(tweet.user.id_str) > -1) {
 
 			// Log info about the Tweet
-			console.log(getTimeStamp() + tweet.user.name + " has tweeted.");
-			console.log(getTimeStamp() + "The text of the tweet is: " + tweet.text);
+			console.log(getTimeStamp(), tweet.user.name + " has tweeted.", resetColor);
+			console.log(getTimeStamp(), "The text of the tweet is: " + tweet.text, resetColor);
 			//console.log(tweet);
 
 			// Determine what type of tweet it is.
@@ -53,15 +63,15 @@ setTimeout(function () {
 				tweetType = "Quoted Retweet";
 				}
 
-			console.log(getTimeStamp() + "The Tweet is a: " + tweetType);
+			console.log(getTimeStamp(), "The Tweet is a: " + tweetType, white);
 
 
 			if(tweetType!="Reply"){
 
 				if (willRetweet()== true){
-					console.log(getTimeStamp() +"Fiona is going to retweet " + tweet.user.name +"'s tweet.'");
+					console.log(getTimeStamp(), yellow + "Fiona is going to retweet " + tweet.user.name +"'s tweet.", resetColor);
 					if(willQuote()== true) {
-						console.log(getTimeStamp() + "Fiona has something to say about " + tweet.user.name +"'s tweet.'");
+						console.log(getTimeStamp(), yellow + "Fiona has something to say about " + tweet.user.name +"'s tweet.", resetColor);
 						
 						var actionType = "retweet";
 						delay = getDelay(actionType);	
@@ -71,7 +81,7 @@ setTimeout(function () {
 							//console.log("This is the URL Fiona will use: "+ "https://twitter.com/i/web/status/" + tweet.id_str)
 							console.log("This is the URL Fiona will use: "+ "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str);
 							  client.post('statuses/update', { status:  getRandomArrayElements(phrases, 1), attachment_url:  "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str }, function(err, data, response) {
-							  console.log(getTimeStamp() + "Fiona has commented on " + tweet.user.name + "'s tweet.");
+							  console.log(getTimeStamp(), green + "Fiona has commented on " + tweet.user.name + "'s tweet.", resetColor);
 							  //console.log(response);
 							})
 
@@ -89,7 +99,7 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
-							console.log(getTimeStamp() + "Fiona has retweeted " + tweet.user.name + "'s tweet.");
+							console.log(getTimeStamp(), green + " Fiona has retweeted " + tweet.user.name + "'s tweet.", resetColor);
 								//console.log(data)
 							})
 						}, delay);	
@@ -98,7 +108,7 @@ setTimeout(function () {
 
 				}// if(willRetweet())
 				else{
-					console.log(getTimeStamp() + "Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
+					console.log(getTimeStamp(), "Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
 				}	
 				
 				if (willFavorite()== true){
@@ -109,19 +119,19 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							client.post('favorites/create', { id: tweet.id_str }, function (err, data, response) {
-								console.log(getTimeStamp() + "Fiona has favorited " + tweet.user.name + "'s tweet.");
+								console.log(getTimeStamp(), green + "Fiona has favorited " + tweet.user.name + "'s tweet.", resetColor);
 								//console.log(data)
 						})
 					}, delay);			
 
 				}// if(willRetweet())
 				else{
-					console.log(getTimeStamp() + "Fiona has decided that she WILL NOT favorite " + tweet.user.name + "'s tweet on this occasion.")
+					console.log(getTimeStamp(), "Fiona has decided that she WILL NOT favorite " + tweet.user.name + "'s tweet on this occasion.")
 				}
 				
 			}
 			else{
-				console.log(getTimeStamp() + "Fiona does not currently respond to replies because she doesn't want to seem demented.")
+				console.log(getTimeStamp(), "Fiona does not currently respond to replies because she doesn't want to seem demented.")
 			}
 	
 		}
@@ -139,7 +149,7 @@ function getDelay(actionType){
 }
 
 function willRetweet(){
-	return decideToAct(.1);
+	return decideToAct(.9);
 }
 
 function willFavorite(){
@@ -160,8 +170,9 @@ function decideToAct(probability){
 	}
 }
 
-
-
+			   
+			   
+// Common functions			   
 function getRandomArrayElements(arr, count) {
 	// function borrowed from https://stackoverflow.com/questions/7158654/how-to-get-random-elements-from-an-array
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
@@ -174,13 +185,9 @@ function getRandomArrayElements(arr, count) {
     return shuffled.slice(min);
 }
 
-
-
-
-
 function getTimeStamp(){
 	// function used to return timestamps for use with console logging.
 	// See https://www.npmjs.com/package/dateformat
 	now = Date();
-	return dateFormat(now, "dd-mm-yyyy HH:MM:ss") + ": ";
+	return cyan + dateFormat(now, "dd-mm-yyyy, HH:MM:ss") + " :" + resetColor;
 }
