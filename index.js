@@ -7,16 +7,25 @@ var yellow = escapeCharcters + "[33m";
 var green = escapeCharcters + "[32m";
 var white = escapeCharcters + "[37m";
 
+// Get environment variables
+// See https://itnext.io/how-to-use-environment-variables-in-node-js-cb2ef0e9574a
+require('dotenv').config();
+
+const consumerKey = process.env['CONSUMER_KEY'];
+const consumerSecret = process.env['CONSUMER_SECRET'];
+const accessToken = process.env['ACCESS_TOKEN'];
+const accessKey = process.env['ACCESS_TOKEN_SECRET'];
+
 
 // Get dependencies
 var dateFormat = require('dateformat');
 const Twitter = require('twit');
 
 const client = new Twitter({
-	consumer_key: 'h51dZgLoJydiSAqosut6vBbKn',
-	consumer_secret: 'UJLFd0AD1Tgpn49cSNZ84FOtJBRVWheCfLkfXCRB9DBElpYLqx',
-	access_token: '1240605934881308673-8m2RT83v1wga7kgZtafUBrD9VXMgPR',
-	access_token_secret: 'YnRAb07vlX0QuIK1RBceX4gMAySEquj4i5hVwpbh77rE9'
+	consumer_key: consumerKey,
+	consumer_secret: consumerSecret,
+	access_token: accessToken,
+	access_token_secret: accessKey
 });
 
 // Set users for Fiona's tweet stream.
