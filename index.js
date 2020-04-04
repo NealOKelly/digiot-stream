@@ -8,10 +8,10 @@ var green = escapeCharcters + "[32m";
 var white = escapeCharcters + "[37m";
 
 
-
+// Get dependencies
 var dateFormat = require('dateformat');
-
 const Twitter = require('twit');
+
 const client = new Twitter({
 	consumer_key: 'h51dZgLoJydiSAqosut6vBbKn',
 	consumer_secret: 'UJLFd0AD1Tgpn49cSNZ84FOtJBRVWheCfLkfXCRB9DBElpYLqx',
@@ -99,7 +99,7 @@ setTimeout(function () {
 
 						setTimeout(function () {
 							client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
-							console.log(getTimeStamp(), green + " Fiona has retweeted " + tweet.user.name + "'s tweet.", resetColor);
+							console.log(getTimeStamp(), green + "Fiona has retweeted " + tweet.user.name + "'s tweet.", resetColor);
 								//console.log(data)
 							})
 						}, delay);	
@@ -149,7 +149,7 @@ function getDelay(actionType){
 }
 
 function willRetweet(){
-	return decideToAct(.9);
+	return decideToAct(.2);
 }
 
 function willFavorite(){
