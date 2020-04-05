@@ -28,11 +28,64 @@ const client = new Twitter({
 	access_token_secret: accessKey
 });
 
-// Set users for Fiona's tweet stream.
-// var users = [Tom, Kit Collingwood, Rob_Stirling, GretaThunberg, MOJSpirit, Justice_Digital, taylorswift13, nealokelly];
-var users = ["1927147742", "454288197"];
+// Get list of ids for users that Fiona follows.
+var followers;
+
+client.get('followers/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
+	followers = data.ids;
+	console.log(getTimeStamp(), "The followers variable has been updated with the following user ids that Fiona follows:");
+	console.log(followers);
+});
+
+// Follow users who follow Fiona
+setTimeout(function () {
+
+	for (i = 0; i < followers.length; ++i) {
+
+		// Follow all users in the array
+		client.post('friendships/create', { user_id : followers[i] }, function(err, data, response) {
+
+			})
+	}
+}, 10000); // wait for 30s before initiating the stream to ensure that the users variable has been updated.
+
+
+
+
+
+
 
 var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏", "👋 tweeps!"];
+
+
+const fs = require('fs')
+	
+	fs.writeFile(
+
+    './phrases.json',
+
+    JSON.stringify(phrases),
+
+    function (err) {
+        if (err) {
+            console.error('Crap happens');
+        }
+    }
+);
+
+fs.readFile('./phrases.json', (err, data) => {
+  if (err) {
+    console.error(err)
+    return
+  }
+  //console.log("data = " + data)
+})
+
+
+// Set users for Fiona's tweet stream.
+// var users = [Justice_Digital, nealokelly];
+var users = ["1927147742", "454288197"];
+
 
 console.log(getTimeStamp(), "The users variable has been seeded with the following users ids:");
 console.log(users);
@@ -178,8 +231,7 @@ function decideToAct(probability){
 		return false;
 	}
 }
-
-			   
+		   
 			   
 // Common functions			   
 function getRandomArrayElements(arr, count) {
