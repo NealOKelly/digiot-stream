@@ -33,7 +33,7 @@ var followers;
 
 client.get('followers/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
 	followers = data.ids;
-	console.log(getTimeStamp(), "The followers variable has been updated with the following user ids that Fiona follows:");
+	console.log(getTimeStamp(), "Fiona will attempt for follow the users who follow her (with the following ids)");
 	console.log(followers);
 });
 
@@ -48,11 +48,6 @@ setTimeout(function () {
 			})
 	}
 }, 10000); // wait for 30s before initiating the stream to ensure that the users variable has been updated.
-
-
-
-
-
 
 
 var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏", "👋 tweeps!"];
@@ -82,20 +77,10 @@ fs.readFile('./phrases.json', (err, data) => {
 })
 
 
-// Set users for Fiona's tweet stream.
-// var users = [Justice_Digital, nealokelly];
-var users = ["1927147742", "454288197"];
-
-
-console.log(getTimeStamp(), "The users variable has been seeded with the following users ids:");
-console.log(users);
-
-
-
 // Get list of ids for users that Fiona follows.
 client.get('friends/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
 	users = data.ids;
-	console.log(getTimeStamp(), "The users variable has been updated with the following user ids that Fiona follows:");
+	console.log(getTimeStamp(), "Fiona will follow the tweets of the users with the following ids:");
 	console.log(users);
 });
 
@@ -125,7 +110,7 @@ setTimeout(function () {
 				tweetType = "Quoted Retweet";
 				}
 
-			console.log(getTimeStamp(), "The Tweet is a: " + tweetType, white);
+			console.log(getTimeStamp(), "The Tweet is a: " + tweetType);
 
 
 			if(tweetType!="Reply"){
@@ -138,9 +123,7 @@ setTimeout(function () {
 						var actionType = "retweet";
 						delay = getDelay(actionType);	
 
-
 						setTimeout(function () {
-							//console.log("This is the URL Fiona will use: "+ "https://twitter.com/i/web/status/" + tweet.id_str)
 							console.log("This is the URL Fiona will use: "+ "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str);
 							  client.post('statuses/update', { status:  getRandomArrayElements(phrases, 1), attachment_url:  "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str }, function(err, data, response) {
 							  console.log(getTimeStamp(), green + "Fiona has commented on " + tweet.user.name + "'s tweet.", resetColor);
@@ -148,10 +131,6 @@ setTimeout(function () {
 							})
 
 						}, delay);
-						
-						
-						
-						
 					}
 					else{
 												
@@ -166,9 +145,7 @@ setTimeout(function () {
 							})
 						}, delay);	
 					}
-		
-
-				}// if(willRetweet())
+				}  // END: if(willRetweet()){};
 				else{
 					console.log(getTimeStamp(), "Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
 				}	
