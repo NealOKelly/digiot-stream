@@ -33,7 +33,7 @@ var followers;
 
 client.get('followers/ids', { screen_name: 'anton_fiona', stringify_ids: true },  function (err, data, response) {
 	followers = data.ids;
-	console.log(getTimeStamp(), "Fiona will attempt for follow the users who follow her (with the following ids)");
+	console.log(getTimeStamp(), "Fiona will attempt for follow the users who follow her (with the following ids):");
 	console.log(followers);
 });
 
@@ -51,6 +51,9 @@ setTimeout(function () {
 
 
 var phrases = ["Disagree", "👍", "This is great.", "This is fab.", "Celebrate this 👏", "Agree", "Not sure about this.", "Totally agree 👏", "Love this! 😍", "Awesome", "More of this please", "Less of this!", "🤔", "👏👏👏", "👋 tweeps!"];
+
+console.log("isActive() = " + isActive())
+
 
 
 const fs = require('fs')
@@ -112,67 +115,72 @@ setTimeout(function () {
 
 			console.log(getTimeStamp(), "The Tweet is a: " + tweetType);
 
+			if(isActive==true){
+				//console.log("Fiona may act.");
+				if(tweetType!="Reply"){
 
-			if(tweetType!="Reply"){
+					if (willRetweet()== true){
+						console.log(getTimeStamp(), yellow + "Fiona is going to retweet " + tweet.user.name +"'s tweet.", resetColor);
+						if(willQuote()== true) {
+							console.log(getTimeStamp(), yellow + "Fiona has something to say about " + tweet.user.name +"'s tweet.", resetColor);
 
-				if (willRetweet()== true){
-					console.log(getTimeStamp(), yellow + "Fiona is going to retweet " + tweet.user.name +"'s tweet.", resetColor);
-					if(willQuote()== true) {
-						console.log(getTimeStamp(), yellow + "Fiona has something to say about " + tweet.user.name +"'s tweet.", resetColor);
-						
-						var actionType = "retweet";
-						delay = getDelay(actionType);	
+							var actionType = "retweet";
+							delay = getDelay(actionType);	
 
-						setTimeout(function () {
-							console.log("This is the URL Fiona will use: "+ "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str);
-							  client.post('statuses/update', { status:  getRandomArrayElements(phrases, 1), attachment_url:  "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str }, function(err, data, response) {
-							  console.log(getTimeStamp(), green + "Fiona has commented on " + tweet.user.name + "'s tweet.", resetColor);
-							  //console.log(response);
-							})
+							setTimeout(function () {
+								console.log("This is the URL Fiona will use: "+ "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str);
+								  client.post('statuses/update', { status:  getRandomArrayElements(phrases, 1), attachment_url:  "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str }, function(err, data, response) {
+								  console.log(getTimeStamp(), green + "Fiona has commented on " + tweet.user.name + "'s tweet.", resetColor);
+								  //console.log(response);
+								})
 
-						}, delay);
-					}
+							}, delay);
+						}
+						else{
+
+							var actionType = "retweet";
+							delay = getDelay(actionType);	
+
+
+							setTimeout(function () {
+								client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
+								console.log(getTimeStamp(), green + "Fiona has retweeted " + tweet.user.name + "'s tweet.", resetColor);
+									//console.log(data)
+								})
+							}, delay);	
+						}
+					}  // END: if(willRetweet()){};
 					else{
-												
-						var actionType = "retweet";
-						delay = getDelay(actionType);	
+						console.log(getTimeStamp(), "Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
+					}	
+
+					if (willFavorite()== true){
+
+							var actionType = "favorite";
+							delay = getDelay(actionType);	
 
 
-						setTimeout(function () {
-							client.post('statuses/retweet/:id', { id: tweet.id_str }, function (err, data, response) {
-							console.log(getTimeStamp(), green + "Fiona has retweeted " + tweet.user.name + "'s tweet.", resetColor);
-								//console.log(data)
+							setTimeout(function () {
+								client.post('favorites/create', { id: tweet.id_str }, function (err, data, response) {
+									console.log(getTimeStamp(), green + "Fiona has favorited " + tweet.user.name + "'s tweet.", resetColor);
+									//console.log(data)
 							})
-						}, delay);	
+						}, delay);			
+
+					}// if(willRetweet())
+					else{
+						console.log(getTimeStamp(), "Fiona has decided that she WILL NOT favorite " + tweet.user.name + "'s tweet on this occasion.")
 					}
-				}  // END: if(willRetweet()){};
-				else{
-					console.log(getTimeStamp(), "Fiona has decided that she WILL NOT retweet " + tweet.user.name + "'s tweet on this occasion.")
-				}	
-				
-				if (willFavorite()== true){
 
-						var actionType = "favorite";
-						delay = getDelay(actionType);	
-
-
-						setTimeout(function () {
-							client.post('favorites/create', { id: tweet.id_str }, function (err, data, response) {
-								console.log(getTimeStamp(), green + "Fiona has favorited " + tweet.user.name + "'s tweet.", resetColor);
-								//console.log(data)
-						})
-					}, delay);			
-
-				}// if(willRetweet())
-				else{
-					console.log(getTimeStamp(), "Fiona has decided that she WILL NOT favorite " + tweet.user.name + "'s tweet on this occasion.")
 				}
-				
+				else{
+					console.log(getTimeStamp(), "Fiona does not currently respond to replies because she doesn't want to seem demented.")
+				}
+
 			}
 			else{
-				console.log(getTimeStamp(), "Fiona does not currently respond to replies because she doesn't want to seem demented.")
+				console.log(getTimeStamp(), "Fiona is sleeping.")
 			}
-	
 		}
 })
 
@@ -188,15 +196,15 @@ function getDelay(actionType){
 }
 
 function willRetweet(){
-	return decideToAct(.2);
+	return decideToAct(.025);
 }
 
 function willFavorite(){
-	return decideToAct(.15);
+	return decideToAct(.5);
 }
 
 function willQuote(){
-	return decideToAct(.5);
+	return decideToAct(.15);
 	// note that Quoting is a subset of retweeting, hence the relatively high probability.
 }
 
@@ -229,3 +237,28 @@ function getTimeStamp(){
 	now = Date();
 	return cyan + dateFormat(now, "dd-mm-yyyy, HH:MM:ss") + " :" + resetColor;
 }
+
+function isActive(){
+	
+	var startTime = '12:00:00';
+	var endTime = '23:00:00';
+
+	currentDate = new Date()   
+
+	startDate = new Date(currentDate.getTime());
+	startDate.setHours(startTime.split(":")[0]);
+	startDate.setMinutes(startTime.split(":")[1]);
+	startDate.setSeconds(startTime.split(":")[2]);
+
+	endDate = new Date(currentDate.getTime());
+	endDate.setHours(endTime.split(":")[0]);
+	endDate.setMinutes(endTime.split(":")[1]);
+	endDate.setSeconds(endTime.split(":")[2]);
+
+	// toggle this to put Fiona into inactive mdoe.
+	//return false;  
+	return startDate < currentDate && endDate > currentDate;
+
+}
+
+
