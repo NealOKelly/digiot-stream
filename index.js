@@ -115,7 +115,7 @@ setTimeout(function () {
 
 			console.log(getTimeStamp(), "The Tweet is a: " + tweetType);
 
-			if(isActive==true){
+			if(isActive()==true){
 				//console.log("Fiona may act.");
 				if(tweetType!="Reply"){
 
